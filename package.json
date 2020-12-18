@@ -1,7 +1,8 @@
 {
-  "name": "react-typescript",
+  "homepage": "https://serjg901.github.io/datenoteProd",
+  "name": "datenote",
   "version": "1.0.0",
-  "description": "React and TypeScript example starter project",
+  "description": "create a note with past or future date and share it",
   "keywords": [
     "typescript",
     "react",
@@ -29,6 +30,8 @@
     "typescript": "3.7.5"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

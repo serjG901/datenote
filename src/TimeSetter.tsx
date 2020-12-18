@@ -25,6 +25,7 @@ export function TimeSetter({ time, setTime }: TimeSetterProps) {
 
   return (
     <DatePicker
+      withPortal
       className={style}
       required
       placeholderText="Время"

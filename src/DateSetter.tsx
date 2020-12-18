@@ -26,6 +26,10 @@ export function DateSetter({ date, setDate }: DateSetterProps) {
   }
   return (
     <DatePicker
+      showMonthDropdown
+      showYearDropdown
+      dropdownMode="select"
+      withPortal
       locale="ru"
       className={style}
       required
