@@ -49,6 +49,7 @@ export function Note() {
   const styleButton = `
     w-full 
     max-w-xs 
+    mt-2
     px-4 
     py-2 
     bg-blue-400 
