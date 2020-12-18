@@ -5,3 +5,7 @@ react + typescript + react-router-dom + history + react-textarea-autosize + reac
 
 try it - https://serjg901.github.io/datenoteProd/
 
+or https://fwlzw.csb.app/
+
+werry good for mobile and smartphones
+
