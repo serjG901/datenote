@@ -2,7 +2,7 @@ import * as React from "react";
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { be, enUS, ru } from "date-fns/locale";
-import { useLanguage } from "./LanguageProvider";
+import { useLanguage } from "../language/LanguageProvider";
 
 interface DateSetterProps {
   date: Date | null;
@@ -36,7 +36,7 @@ export function DateSetter({ date, setDate }: DateSetterProps) {
   function handleChange(value: Date): void {
     setDate(value);
   }
-  return languageContext !== null ? (
+  return (
     <DatePicker
       showMonthDropdown
       showYearDropdown
@@ -50,5 +50,5 @@ export function DateSetter({ date, setDate }: DateSetterProps) {
       dateFormat="dd.MM.yyyy"
       selected={date}
     />
-  ) : null;
+  );
 }

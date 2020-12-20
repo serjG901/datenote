@@ -1,7 +1,7 @@
 import * as React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useLanguage } from "./LanguageProvider";
+import { useLanguage } from "../language/LanguageProvider";
 
 interface TimeSetterProps {
   time: Date | null;
@@ -26,7 +26,7 @@ export function TimeSetter({ time, setTime }: TimeSetterProps) {
     setTime(value);
   }
 
-  return languageContext !== null ? (
+  return (
     <DatePicker
       withPortal
       className={style}
@@ -40,5 +40,5 @@ export function TimeSetter({ time, setTime }: TimeSetterProps) {
       onChange={handleChange}
       selected={time}
     />
-  ) : null;
+  );
 }

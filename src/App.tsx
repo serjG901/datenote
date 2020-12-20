@@ -1,27 +1,31 @@
 import * as React from "react";
 import "./styles.css";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { NoteCreator } from "./NoteCreator";
-import { Note } from "./Note";
+import { createBrowserHistory } from "history";
+import { NoteCreator } from "./pages/NoteCreator";
+import { Note } from "./pages/Note";
 import { AppName } from "./AppName";
-import { LanguageProvider } from "./LanguageProvider";
-import { LanguageSetter } from "./LanguageSetter";
+import { LanguageProvider } from "./language/LanguageProvider";
+import { LanguageSetter } from "./language/LanguageSetter";
 
 export default function App() {
+  const history = createBrowserHistory();
+
+  const [page, setPage] = React.useState(location.hash ? "note" : "create");
+
+  React.useEffect(() => {
+    let unlisten = history.listen(({ action, location }) => {
+      location.hash ? setPage("note") : setPage("create");
+    });
+    return () => {
+      unlisten();
+    };
+  });
+
   return (
     <LanguageProvider>
-      <Router>
-        <AppName />
-        <LanguageSetter />
-        <Switch>
-          <Route path="/note">
-            <Note />
-          </Route>
-          <Route path="/">
-            <NoteCreator />
-          </Route>
-        </Switch>
-      </Router>
+      <AppName />
+      <LanguageSetter />
+      {page === "note" ? <Note /> : <NoteCreator onNote={setPage} />}
     </LanguageProvider>
   );
 }

@@ -4,8 +4,8 @@ import queryString from "query-string";
 import {
   getTimeDifference,
   getTimeDifferenceInterface,
-} from "./getTimeDifference";
-import { useLanguage } from "./LanguageProvider";
+} from "../pureFunctions/getTimeDifference";
+import { useLanguage } from "../language/LanguageProvider";
 
 export function Note() {
   const languageContext = useLanguage();
@@ -20,7 +20,7 @@ export function Note() {
     timeDifference,
     setTimeDifference,
   ] = React.useState<getTimeDifferenceInterface | null>(() => {
-    if (note !== null && languageContext !== null)
+    if (note !== null)
       return getTimeDifference(Number(note.dateTime), languageContext.language);
     return null;
   });
@@ -28,7 +28,7 @@ export function Note() {
   const [messageForUser, setMessageForUser] = React.useState("");
 
   React.useEffect(() => {
-    if (note !== null && note !== undefined && languageContext !== null) {
+    if (note !== null) {
       const timeoutlId = setTimeout(() => {
         const time =
           getTimeDifference(Number(note.dateTime), languageContext.language) ||
@@ -69,7 +69,7 @@ export function Note() {
     text-white  
     `;
 
-  return note && languageContext !== null ? (
+  return note ? (
     <div className={stylePage}>
       <div
         className={

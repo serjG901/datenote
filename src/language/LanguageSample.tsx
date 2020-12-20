@@ -21,7 +21,7 @@ export default function LanguageSample({
     hover:text-white
     `;
 
-  return languageContext !== null ? (
+  return (
     <div
       className={`
         ${style} 
@@ -34,5 +34,5 @@ export default function LanguageSample({
     >
       {languageName}
     </div>
-  ) : null;
+  );
 }

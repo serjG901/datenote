@@ -1,6 +1,6 @@
 import * as React from "react";
 import TextareaAutosize from "react-textarea-autosize";
-import { useLanguage } from "./LanguageProvider";
+import { useLanguage } from "../language/LanguageProvider";
 
 interface TextSetterProps {
   text: string;
@@ -29,7 +29,7 @@ export function TextSetter({ text, setText }: TextSetterProps) {
     setText(event.target.value);
   }
 
-  return languageContext !== null ? (
+  return (
     <TextareaAutosize
       placeholder={languageContext.language.writeNote}
       className={
@@ -48,5 +48,5 @@ export function TextSetter({ text, setText }: TextSetterProps) {
       onChange={handleChange}
       value={text}
     />
-  ) : null;
+  );
 }

@@ -1,6 +1,6 @@
 import belRusNumbers from "./belRusNumbers";
 import englishNumbers from "./englishNumbers";
-import { LocalLanguageInterface } from "./LanguageProvider";
+import { LocalLanguageInterface } from "../language/LanguageProvider";
 
 export interface getTimeDifferenceInterface {
   explane: string;
