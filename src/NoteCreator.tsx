@@ -4,8 +4,11 @@ import queryString from "query-string";
 import { TextSetter } from "./TextSetter";
 import { DateSetter } from "./DateSetter";
 import { TimeSetter } from "./TimeSetter";
+import { useLanguage } from "./LanguageProvider";
 
 export function NoteCreator() {
+  const languageContext = useLanguage();
+
   const history = createBrowserHistory();
   const [text, setText] = React.useState("");
   const [date, setDate] = React.useState<Date | null>(null);
@@ -26,7 +29,6 @@ export function NoteCreator() {
 
   const styleForm = `
     p-9 
-    h-screen 
     flex 
     flex-col 
     items-center 
@@ -36,8 +38,7 @@ export function NoteCreator() {
     w-full 
     max-w-xs 
     px-4 
-    pt-2
-    pb-4 
+    py-4 
     bg-blue-400 
     hover:bg-blue-600 
     shadow
@@ -45,17 +46,16 @@ export function NoteCreator() {
     rounded 
     text-white 
     text-4xl
-    align-middle
     `;
 
-  return (
+  return languageContext !== null ? (
     <form className={styleForm} onSubmit={handleSubmit}>
       <TextSetter text={text} setText={setText} />
       <DateSetter date={date} setDate={setDate} />
       <TimeSetter time={time} setTime={setTime} />
       <button className={styleButton} type="submit">
-        Создать
+        {languageContext.language.create}
       </button>
     </form>
-  );
+  ) : null;
 }

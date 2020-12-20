@@ -5,24 +5,34 @@ import {
   getTimeDifference,
   getTimeDifferenceInterface,
 } from "./getTimeDifference";
+import { useLanguage } from "./LanguageProvider";
 
 export function Note() {
+  const languageContext = useLanguage();
+
   const history = createBrowserHistory();
+
   const note = history.location.hash
     ? queryString.parse(history.location.hash)
     : null;
+
   const [
     timeDifference,
     setTimeDifference,
   ] = React.useState<getTimeDifferenceInterface | null>(() => {
-    if (note === null) return null;
-    return getTimeDifference(Number(note.dateTime));
+    if (note !== null && languageContext !== null)
+      return getTimeDifference(Number(note.dateTime), languageContext.language);
+    return null;
   });
 
+  const [messageForUser, setMessageForUser] = React.useState("");
+
   React.useEffect(() => {
-    if (note !== null && note !== undefined) {
+    if (note !== null && note !== undefined && languageContext !== null) {
       const timeoutlId = setTimeout(() => {
-        const time = getTimeDifference(Number(note.dateTime)) || "";
+        const time =
+          getTimeDifference(Number(note.dateTime), languageContext.language) ||
+          "";
         setTimeDifference(time);
       }, 1000);
       return () => {
@@ -32,8 +42,7 @@ export function Note() {
   }, [timeDifference]);
 
   const stylePage = `
-    px-8 
-    py-12 
+    p-9 
     flex 
     flex-col 
     items-center 
@@ -51,7 +60,7 @@ export function Note() {
     max-w-xs 
     mt-2
     px-4 
-    py-2 
+    py-4 
     bg-blue-400 
     hover:bg-blue-600 
     shadow
@@ -60,12 +69,25 @@ export function Note() {
     text-white  
     `;
 
-  return note ? (
+  return note && languageContext !== null ? (
     <div className={stylePage}>
-      <div className={`${styleBlock} break-word`}>{note.text}</div>
+      <div
+        className={
+          note.text === null || note.text.length < 24
+            ? `${styleBlock} break-word`
+            : note.text.length < 48
+            ? `${styleBlock} break-word sm:max-w-screen-sm`
+            : note.text.length < 72
+            ? `${styleBlock} break-word sm:max-w-screen-sm md:max-w-screen-md`
+            : note.text.length < 96
+            ? `${styleBlock} break-word sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg`
+            : `${styleBlock} break-word sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl`
+        }
+      >
+        {note.text}
+      </div>
       {timeDifference !== null ? (
-        <div className={`${styleBlock} text-gray-500`}>
-          <p>{timeDifference.explane}</p>
+        <div className={`${styleBlock} text-gray-500 text-2xl`}>
           {timeDifference.years !== "" ? <p>{timeDifference.years}</p> : null}
           {timeDifference.months !== "" ? <p>{timeDifference.months}</p> : null}
           {timeDifference.days !== "" ? <p>{timeDifference.days}</p> : null}
@@ -76,16 +98,28 @@ export function Note() {
           {timeDifference.seconds !== "" ? (
             <p>{timeDifference.seconds}</p>
           ) : null}
+          <p>{timeDifference.explane}</p>
+          <p className="text-2xl">
+            {new Date(Number(note.dateTime)).toLocaleString()}
+          </p>
         </div>
       ) : null}
       <button
         className={styleButton}
         onClick={() => {
-          navigator.clipboard.writeText(window.location.href);
+          try {
+            navigator.clipboard.writeText(window.location.href);
+            setMessageForUser(languageContext.language.copySucces);
+          } catch (e) {
+            setMessageForUser(languageContext.language.copyCrash);
+          }
         }}
       >
-        Копировать ссылку
+        {languageContext.language.copyLink}
       </button>
+      {messageForUser !== "" ? (
+        <p className="text-sm text-red-500">{messageForUser}</p>
+      ) : null}
     </div>
   ) : null;
 }

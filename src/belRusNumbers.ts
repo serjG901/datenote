@@ -1,8 +1,8 @@
-export default function rusNumbers(
+export default function belRusNumbers(
   number: number,
   name1: string,
-  name2: string,
-  name3: string
+  name234: string,
+  name5andHigher: string
 ): string {
   const numberAbs = Math.abs(number);
 
@@ -17,9 +17,13 @@ export default function rusNumbers(
       numberAbs.toString().slice(-1) === "4") &&
     numberAbs.toString().slice(-2, -1) !== "1"
   )
-    return `${number} ${name2}`;
-  if (numberAbs > 4 || number.toString().slice(-2, -1) === "1" || numberAbs === 0)
-    return `${number} ${name3}`;
+    return `${number} ${name234}`;
+  if (
+    numberAbs > 4 ||
+    number.toString().slice(-2, -1) === "1" ||
+    numberAbs === 0
+  )
+    return `${number} ${name5andHigher}`;
 
   return "";
 }

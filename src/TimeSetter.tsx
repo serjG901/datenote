@@ -1,6 +1,7 @@
 import * as React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useLanguage } from "./LanguageProvider";
 
 interface TimeSetterProps {
   time: Date | null;
@@ -8,6 +9,8 @@ interface TimeSetterProps {
 }
 
 export function TimeSetter({ time, setTime }: TimeSetterProps) {
+  const languageContext = useLanguage();
+
   const style = `
     px-4 
     py-4 
@@ -23,20 +26,19 @@ export function TimeSetter({ time, setTime }: TimeSetterProps) {
     setTime(value);
   }
 
-  return (
+  return languageContext !== null ? (
     <DatePicker
       withPortal
       className={style}
       required
-      placeholderText="Время"
-      showTimeSelect
+      placeholderText={languageContext.language.time}
       showTimeSelectOnly
-      timeIntervals={5}
-      timeCaption="Время"
-      dateFormat="HH:mm:ss"
+      timeInputLabel={`${languageContext.language.time}:`}
+      showTimeInput
+      dateFormat="HH:mm"
       timeFormat="HH:mm"
       onChange={handleChange}
       selected={time}
     />
-  );
+  ) : null;
 }

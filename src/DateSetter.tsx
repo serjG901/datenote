@@ -1,8 +1,8 @@
 import * as React from "react";
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { ru } from "date-fns/locale";
-registerLocale("ru", ru);
+import { be, enUS, ru } from "date-fns/locale";
+import { useLanguage } from "./LanguageProvider";
 
 interface DateSetterProps {
   date: Date | null;
@@ -10,6 +10,18 @@ interface DateSetterProps {
 }
 
 export function DateSetter({ date, setDate }: DateSetterProps) {
+  const languageContext = useLanguage();
+
+  if (languageContext !== null && languageContext.language.name === "by") {
+    registerLocale("by", be);
+  }
+  if (languageContext !== null && languageContext.language.name === "en") {
+    registerLocale("en", enUS);
+  }
+  if (languageContext !== null && languageContext.language.name === "ru") {
+    registerLocale("ru", ru);
+  }
+
   const style = `
     px-4 
     py-4 
@@ -24,19 +36,19 @@ export function DateSetter({ date, setDate }: DateSetterProps) {
   function handleChange(value: Date): void {
     setDate(value);
   }
-  return (
+  return languageContext !== null ? (
     <DatePicker
       showMonthDropdown
       showYearDropdown
       dropdownMode="select"
       withPortal
-      locale="ru"
+      locale={languageContext.language.name}
       className={style}
       required
       onChange={handleChange}
-      placeholderText="Дата"
+      placeholderText={languageContext.language.date}
       dateFormat="dd.MM.yyyy"
       selected={date}
     />
-  );
+  ) : null;
 }

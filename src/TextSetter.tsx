@@ -1,5 +1,6 @@
 import * as React from "react";
 import TextareaAutosize from "react-textarea-autosize";
+import { useLanguage } from "./LanguageProvider";
 
 interface TextSetterProps {
   text: string;
@@ -7,7 +8,11 @@ interface TextSetterProps {
 }
 
 export function TextSetter({ text, setText }: TextSetterProps) {
+  const languageContext = useLanguage();
+
   const style = `
+    transition-all 
+    duration-1000
     px-4 
     py-4
     pb-6 
@@ -24,14 +29,24 @@ export function TextSetter({ text, setText }: TextSetterProps) {
     setText(event.target.value);
   }
 
-  return (
+  return languageContext !== null ? (
     <TextareaAutosize
-      placeholder="Напишите заметку..."
-      className={style}
+      placeholder={languageContext.language.writeNote}
+      className={
+        text === null || text.length < 24
+          ? style
+          : text.length < 48
+          ? `${style} sm:max-w-screen-sm`
+          : text.length < 72
+          ? `${style} sm:max-w-screen-sm md:max-w-screen-md`
+          : text.length < 96
+          ? `${style} sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg`
+          : `${style} sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl`
+      }
       required
       minRows={4}
       onChange={handleChange}
       value={text}
     />
-  );
+  ) : null;
 }
