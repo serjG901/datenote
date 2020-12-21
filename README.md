@@ -1,4 +1,4 @@
-# datenote
+# DateNote
 create a note with past or future date and share it
 
 try it - https://datenote.netlify.app/
