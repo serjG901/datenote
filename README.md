@@ -1,9 +1,9 @@
 # datenote
 create a note with past or future date and share it
 
-react + typescript + react-router-dom + history + react-textarea-autosize + react-datepicker + date-fns
+react + typescript + history + react-textarea-autosize + react-datepicker + date-fns
 
-try it - https://fwlzw.csb.app/
+try it - https://datenote.netlify.app/
 
 werry good for mobile and smartphones
 
