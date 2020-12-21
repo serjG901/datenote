@@ -10,7 +10,7 @@ interface DateSetterProps {
   explanePlaceholder: string;
 }
 
-export function DateSetter({
+export default function DateSetter({
   date,
   setDate,
   currentLanguage,

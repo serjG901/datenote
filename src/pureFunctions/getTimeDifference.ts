@@ -1,5 +1,4 @@
-import belRusNumbers from "./belRusNumbers";
-import englishNumbers from "./englishNumbers";
+import nameMeasureViaNumberAndLanguage from "./nameMeasureViaNumberAndLanguage";
 
 export interface getTimeDifferenceInterface {
   explane: string;
@@ -12,14 +11,13 @@ export interface getTimeDifferenceInterface {
 }
 
 export function getTimeDifference(
+  dateNow: number,
   dateNote: number,
   currentLanguage: string,
   passedViaLanguage: string,
   nowViaLanguage: string,
   leftViatLanguage: string
 ): getTimeDifferenceInterface {
-  const dateNow = new Date().setMilliseconds(0);
-
   const yearsNote = new Date(dateNote).getFullYear();
   const yearsNow = new Date(dateNow).getFullYear();
 
@@ -38,16 +36,22 @@ export function getTimeDifference(
   const secondsNote = new Date(dateNote).getSeconds();
   const secondsNow = new Date(dateNow).getSeconds();
 
-  const daysInMonth =
-    monthsNow === 3 || monthsNow === 5 || monthsNow === 8 || monthsNow === 10
+  let diffTime = (dateNow - dateNote) / 1000;
+
+  const monthForCorrection = diffTime > 0 ? monthsNote : monthsNow;
+  const yearForCorrection = diffTime > 0 ? yearsNote : yearsNow;
+
+  const daysInMonthForCorrection =
+    monthForCorrection === 3 ||
+    monthForCorrection === 5 ||
+    monthForCorrection === 8 ||
+    monthForCorrection === 10
       ? 30
-      : monthsNow === 2 && yearsNow % 4 === 0
+      : monthForCorrection === 2 && yearForCorrection % 4 === 0
       ? 29
-      : monthsNow === 2 && yearsNow % 4 !== 0
+      : monthForCorrection === 2 && yearForCorrection % 4 !== 0
       ? 27
       : 31;
-
-  let diffTime = (dateNow - dateNote) / 1000;
 
   let diffYears = diffTime > 0 ? yearsNow - yearsNote : yearsNote - yearsNow;
   let diffMonths =
@@ -89,74 +93,10 @@ export function getTimeDifference(
   if (diffSeconds < 0) diffMinutes -= 1;
 
   diffMonths = diffMonths < 0 ? 12 + diffMonths : diffMonths;
-  diffDays = diffDays < 0 ? daysInMonth + diffDays : diffDays;
+  diffDays = diffDays < 0 ? daysInMonthForCorrection + diffDays : diffDays;
   diffHours = diffHours < 0 ? 24 + diffHours : diffHours;
   diffMinutes = diffMinutes < 0 ? 60 + diffMinutes : diffMinutes;
   diffSeconds = diffSeconds < 0 ? 60 + diffSeconds : diffSeconds;
-
-  const localeNumber = (number: number, measure: string) => {
-    if (currentLanguage === "by") {
-      if (measure === "years") {
-        return belRusNumbers(number, "год", "гады", "гадоў");
-      }
-      if (measure === "months") {
-        return belRusNumbers(number, "месяц", "месяцы", "месяцаў");
-      }
-      if (measure === "days") {
-        return belRusNumbers(number, "дзень", "дні", "дзён");
-      }
-      if (measure === "hours") {
-        return belRusNumbers(number, "гадзіна", "гадзіны", "гадзін");
-      }
-      if (measure === "minutes") {
-        return belRusNumbers(number, "хвіліна", "хвіліны", "хвілін");
-      }
-      if (measure === "seconds") {
-        return belRusNumbers(number, "секунда", "секунды", "секунд");
-      }
-    }
-    if (currentLanguage === "en") {
-      if (measure === "years") {
-        return englishNumbers(number, "year");
-      }
-      if (measure === "months") {
-        return englishNumbers(number, "month");
-      }
-      if (measure === "days") {
-        return englishNumbers(number, "day");
-      }
-      if (measure === "hours") {
-        return englishNumbers(number, "hour");
-      }
-      if (measure === "minutes") {
-        return englishNumbers(number, "minute");
-      }
-      if (measure === "seconds") {
-        return englishNumbers(number, "second");
-      }
-    }
-    if (currentLanguage === "ru") {
-      if (measure === "years") {
-        return belRusNumbers(number, "год", "года", "лет");
-      }
-      if (measure === "months") {
-        return belRusNumbers(number, "месяц", "месяца", "месяцев");
-      }
-      if (measure === "days") {
-        return belRusNumbers(number, "день", "дня", "дней");
-      }
-      if (measure === "hours") {
-        return belRusNumbers(number, "час", "часа", "часов");
-      }
-      if (measure === "minutes") {
-        return belRusNumbers(number, "минута", "минуты", "минут");
-      }
-      if (measure === "seconds") {
-        return belRusNumbers(number, "секунда", "секунды", "секунд");
-      }
-    }
-    return "";
-  };
 
   const timeDifference = {
     explane:
@@ -165,18 +105,33 @@ export function getTimeDifference(
         : diffTime > 0
         ? passedViaLanguage
         : leftViatLanguage,
-    years: diffYears !== 0 ? localeNumber(diffYears, "years") : "",
+    years:
+      diffYears !== 0
+        ? nameMeasureViaNumberAndLanguage(
+            diffYears,
+            "year",
+            currentLanguage
+          )
+        : "",
     months:
       diffMonths !== 0 || diffYears !== 0
-        ? localeNumber(diffMonths, "months")
+        ? nameMeasureViaNumberAndLanguage(
+            diffMonths,
+            "month",
+            currentLanguage
+          )
         : "",
     days:
       diffDays !== 0 || diffMonths !== 0 || diffYears !== 0
-        ? localeNumber(diffDays, "days")
+        ? nameMeasureViaNumberAndLanguage(diffDays, "day", currentLanguage)
         : "",
     hours:
       diffHours !== 0 || diffDays !== 0 || diffMonths !== 0 || diffYears !== 0
-        ? localeNumber(diffHours, "hours")
+        ? nameMeasureViaNumberAndLanguage(
+            diffHours,
+            "hour",
+            currentLanguage
+          )
         : "",
     minutes:
       diffMinutes !== 0 ||
@@ -184,7 +139,11 @@ export function getTimeDifference(
       diffDays !== 0 ||
       diffMonths !== 0 ||
       diffYears !== 0
-        ? localeNumber(diffMinutes, "minutes")
+        ? nameMeasureViaNumberAndLanguage(
+            diffMinutes,
+            "minute",
+            currentLanguage
+          )
         : "",
     seconds:
       diffSeconds !== 0 ||
@@ -193,7 +152,11 @@ export function getTimeDifference(
       diffDays !== 0 ||
       diffMonths !== 0 ||
       diffYears !== 0
-        ? localeNumber(diffSeconds, "seconds")
+        ? nameMeasureViaNumberAndLanguage(
+            diffSeconds,
+            "second",
+            currentLanguage
+          )
         : "",
   };
   return timeDifference;

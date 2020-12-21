@@ -7,7 +7,7 @@ interface TextSetterProps {
   explanePlaceholder: string;
 }
 
-export function TextSetter({
+export default function TextSetter({
   text,
   setText,
   explanePlaceholder,
@@ -17,7 +17,6 @@ export function TextSetter({
     duration-1000
     px-4 
     py-4
-    pb-6 
     mb-4
     w-full 
     max-w-xs 

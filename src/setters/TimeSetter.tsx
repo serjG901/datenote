@@ -8,7 +8,7 @@ interface TimeSetterProps {
   explanePlaceholder: string;
 }
 
-export function TimeSetter({
+export default function TimeSetter({
   time,
   setTime,
   explanePlaceholder,
@@ -16,7 +16,7 @@ export function TimeSetter({
   const style = `
     px-4 
     py-4 
-    mb-6
+    mb-4
     w-full 
     shadow 
     text-left 

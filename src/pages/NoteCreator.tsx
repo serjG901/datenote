@@ -2,15 +2,16 @@ import * as React from "react";
 import { createBrowserHistory } from "history";
 import queryString from "query-string";
 import { useLanguage } from "../language/LanguageProvider";
-import { TextSetter } from "../setters/TextSetter";
-import { DateSetter } from "../setters/DateSetter";
-import { TimeSetter } from "../setters/TimeSetter";
+import TextSetter from "../setters/TextSetter";
+import DateSetter from "../setters/DateSetter";
+import TimeSetter from "../setters/TimeSetter";
+import Button from "../common/Button";
 
 interface NoteCreatorProps {
-  onNote: (value: string) => void;
+  onPage: (value: "note" | "create") => void;
 }
 
-export default function NoteCreator({ onNote }: NoteCreatorProps) {
+export default function NoteCreator({ onPage }: NoteCreatorProps) {
   const languageContext = useLanguage();
 
   const history = createBrowserHistory();
@@ -28,38 +29,26 @@ export default function NoteCreator({ onNote }: NoteCreatorProps) {
 
     const diffTime =
       Date.parse(time.toString()) - new Date().setHours(0, 0, 0, 0);
+
     const note = queryString.stringify({
       text,
       dateTime: Date.parse(date.toString()) + diffTime,
     });
 
     history.push(`#${note}`);
-    onNote("note");
+    onPage("note");
   }
 
-  const styleForm = `
+  const stylePage = `
     p-9 
     flex 
     flex-col 
     items-center 
     text-2xl
     `;
-  const styleButton = `
-    w-full 
-    max-w-xs 
-    px-4 
-    py-4 
-    bg-blue-400 
-    hover:bg-blue-600 
-    shadow
-    hover:shadow-md
-    rounded 
-    text-white 
-    text-4xl
-    `;
 
   return (
-    <form className={styleForm} onSubmit={handleSubmit}>
+    <form className={stylePage} onSubmit={handleSubmit}>
       <TextSetter
         text={text}
         setText={setText}
@@ -76,9 +65,7 @@ export default function NoteCreator({ onNote }: NoteCreatorProps) {
         setTime={setTime}
         explanePlaceholder={languageContext.language.time}
       />
-      <button className={styleButton} type="submit">
-        {languageContext.language.create}
-      </button>
+      <Button type="submit" text={languageContext.language.create} />
     </form>
   );
 }
