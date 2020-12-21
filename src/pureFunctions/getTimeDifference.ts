@@ -1,6 +1,5 @@
 import belRusNumbers from "./belRusNumbers";
 import englishNumbers from "./englishNumbers";
-import { LocalLanguageInterface } from "../language/LanguageProvider";
 
 export interface getTimeDifferenceInterface {
   explane: string;
@@ -14,7 +13,10 @@ export interface getTimeDifferenceInterface {
 
 export function getTimeDifference(
   dateNote: number,
-  language: LocalLanguageInterface
+  currentLanguage: string,
+  passedViaLanguage: string,
+  nowViaLanguage: string,
+  leftViatLanguage: string
 ): getTimeDifferenceInterface {
   const dateNow = new Date().setMilliseconds(0);
 
@@ -93,7 +95,7 @@ export function getTimeDifference(
   diffSeconds = diffSeconds < 0 ? 60 + diffSeconds : diffSeconds;
 
   const localeNumber = (number: number, measure: string) => {
-    if (language.name === "by") {
+    if (currentLanguage === "by") {
       if (measure === "years") {
         return belRusNumbers(number, "год", "гады", "гадоў");
       }
@@ -113,7 +115,7 @@ export function getTimeDifference(
         return belRusNumbers(number, "секунда", "секунды", "секунд");
       }
     }
-    if (language.name === "en") {
+    if (currentLanguage === "en") {
       if (measure === "years") {
         return englishNumbers(number, "year");
       }
@@ -133,7 +135,7 @@ export function getTimeDifference(
         return englishNumbers(number, "second");
       }
     }
-    if (language.name === "ru") {
+    if (currentLanguage === "ru") {
       if (measure === "years") {
         return belRusNumbers(number, "год", "года", "лет");
       }
@@ -159,10 +161,10 @@ export function getTimeDifference(
   const timeDifference = {
     explane:
       diffTime === 0
-        ? language.now
+        ? nowViaLanguage
         : diffTime > 0
-        ? language.passed
-        : language.left,
+        ? passedViaLanguage
+        : leftViatLanguage,
     years: diffYears !== 0 ? localeNumber(diffYears, "years") : "",
     months:
       diffMonths !== 0 || diffYears !== 0

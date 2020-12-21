@@ -1,13 +1,11 @@
 ﻿import React from "react";
 import { useLanguage } from "./LanguageProvider";
 
-interface LanguageSampleInterface {
+interface LanguageSampleProps {
   languageName: string;
 }
 
-export default function LanguageSample({
-  languageName,
-}: LanguageSampleInterface) {
+export default function LanguageSample({ languageName }: LanguageSampleProps) {
   const languageContext = useLanguage();
 
   const style = `

@@ -7,7 +7,7 @@ import {
 } from "../pureFunctions/getTimeDifference";
 import { useLanguage } from "../language/LanguageProvider";
 
-export function Note() {
+export default function Note() {
   const languageContext = useLanguage();
 
   const history = createBrowserHistory();
@@ -21,18 +21,29 @@ export function Note() {
     setTimeDifference,
   ] = React.useState<getTimeDifferenceInterface | null>(() => {
     if (note !== null)
-      return getTimeDifference(Number(note.dateTime), languageContext.language);
+      return getTimeDifference(
+        Number(note.dateTime),
+        languageContext.language.name,
+        languageContext.language.passed,
+        languageContext.language.now,
+        languageContext.language.left
+      );
     return null;
   });
 
-  const [messageForUser, setMessageForUser] = React.useState("");
+  const [statusCopyLink, setStatusCopyLink] = React.useState("");
 
   React.useEffect(() => {
     if (note !== null) {
       const timeoutlId = setTimeout(() => {
         const time =
-          getTimeDifference(Number(note.dateTime), languageContext.language) ||
-          "";
+          getTimeDifference(
+            Number(note.dateTime),
+            languageContext.language.name,
+            languageContext.language.passed,
+            languageContext.language.now,
+            languageContext.language.left
+          ) || "";
         setTimeDifference(time);
       }, 1000);
       return () => {
@@ -107,18 +118,25 @@ export function Note() {
       <button
         className={styleButton}
         onClick={() => {
+          setStatusCopyLink("");
           try {
             navigator.clipboard.writeText(window.location.href);
-            setMessageForUser(languageContext.language.copySucces);
+            setStatusCopyLink("succes");
           } catch (e) {
-            setMessageForUser(languageContext.language.copyCrash);
+            setStatusCopyLink("crash");
           }
         }}
       >
         {languageContext.language.copyLink}
       </button>
-      {messageForUser !== "" ? (
-        <p className="text-sm text-red-500">{messageForUser}</p>
+      {statusCopyLink === "succes" ? (
+        <p className="text-sm text-red-500">
+          {languageContext.language.copySucces}
+        </p>
+      ) : statusCopyLink === "crash" ? (
+        <p className="text-sm text-red-500">
+          {languageContext.language.copyCrash}
+        </p>
       ) : null}
     </div>
   ) : null;

@@ -1,15 +1,17 @@
 import * as React from "react";
 import TextareaAutosize from "react-textarea-autosize";
-import { useLanguage } from "../language/LanguageProvider";
 
 interface TextSetterProps {
   text: string;
   setText: (value: string) => void;
+  explanePlaceholder: string;
 }
 
-export function TextSetter({ text, setText }: TextSetterProps) {
-  const languageContext = useLanguage();
-
+export function TextSetter({
+  text,
+  setText,
+  explanePlaceholder,
+}: TextSetterProps) {
   const style = `
     transition-all 
     duration-1000
@@ -31,7 +33,7 @@ export function TextSetter({ text, setText }: TextSetterProps) {
 
   return (
     <TextareaAutosize
-      placeholder={languageContext.language.writeNote}
+      placeholder={explanePlaceholder}
       className={
         text === null || text.length < 24
           ? style

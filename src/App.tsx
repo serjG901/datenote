@@ -1,11 +1,12 @@
 import * as React from "react";
 import "./styles.css";
 import { createBrowserHistory } from "history";
-import { NoteCreator } from "./pages/NoteCreator";
-import { Note } from "./pages/Note";
-import { AppName } from "./AppName";
 import { LanguageProvider } from "./language/LanguageProvider";
-import { LanguageSetter } from "./language/LanguageSetter";
+import AppName from "./AppName";
+import LanguageSetter from "./language/LanguageSetter";
+import NoteCreator from "./pages/NoteCreator";
+import Note from "./pages/Note";
+import NotFound from "./pages/NotFound";
 
 export default function App() {
   const history = createBrowserHistory();
@@ -25,7 +26,13 @@ export default function App() {
     <LanguageProvider>
       <AppName />
       <LanguageSetter />
-      {page === "note" ? <Note /> : <NoteCreator onNote={setPage} />}
+      {page === "create" ? (
+        <NoteCreator onNote={setPage} />
+      ) : page === "note" ? (
+        <Note />
+      ) : (
+        <NotFound />
+      )}
     </LanguageProvider>
   );
 }

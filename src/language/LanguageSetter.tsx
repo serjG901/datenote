@@ -2,7 +2,7 @@
 import { languageText } from "./LanguageProvider";
 import LanguageSample from "./LanguageSample";
 
-export function LanguageSetter() {
+export default function LanguageSetter() {
   const languageNames = Object.keys(languageText);
   return (
     <div className="w-full flex justify-center">

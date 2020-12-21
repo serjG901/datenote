@@ -2,24 +2,29 @@ import * as React from "react";
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { be, enUS, ru } from "date-fns/locale";
-import { useLanguage } from "../language/LanguageProvider";
 
 interface DateSetterProps {
   date: Date | null;
   setDate: (value: Date) => void;
+  currentLanguage: string;
+  explanePlaceholder: string;
 }
 
-export function DateSetter({ date, setDate }: DateSetterProps) {
-  const languageContext = useLanguage();
-
-  if (languageContext !== null && languageContext.language.name === "by") {
-    registerLocale("by", be);
-  }
-  if (languageContext !== null && languageContext.language.name === "en") {
-    registerLocale("en", enUS);
-  }
-  if (languageContext !== null && languageContext.language.name === "ru") {
-    registerLocale("ru", ru);
+export function DateSetter({
+  date,
+  setDate,
+  currentLanguage,
+  explanePlaceholder,
+}: DateSetterProps) {
+  switch (currentLanguage) {
+    case "by":
+      registerLocale("by", be);
+      break;
+    case "ru":
+      registerLocale("ru", ru);
+      break;
+    default:
+      registerLocale("en", enUS);
   }
 
   const style = `
@@ -42,11 +47,11 @@ export function DateSetter({ date, setDate }: DateSetterProps) {
       showYearDropdown
       dropdownMode="select"
       withPortal
-      locale={languageContext.language.name}
+      locale={currentLanguage}
       className={style}
       required
       onChange={handleChange}
-      placeholderText={languageContext.language.date}
+      placeholderText={explanePlaceholder}
       dateFormat="dd.MM.yyyy"
       selected={date}
     />

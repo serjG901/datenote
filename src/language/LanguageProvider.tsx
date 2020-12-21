@@ -1,5 +1,9 @@
 ﻿﻿import React, { ReactNode } from "react";
 
+interface KeyStringInterface {
+  [key: string]: CurrentLanguageInterface;
+}
+
 export const languageText: KeyStringInterface = {
   by: {
     name: "by",
@@ -45,7 +49,7 @@ export const languageText: KeyStringInterface = {
   },
 };
 
-export interface LocalLanguageInterface {
+export interface CurrentLanguageInterface {
   name: string;
   create: string;
   copyLink: string;
@@ -62,7 +66,7 @@ export interface LocalLanguageInterface {
 function initialSetLanguage() {}
 
 interface LanguageContextInterface {
-  language: LocalLanguageInterface;
+  language: CurrentLanguageInterface;
   setCurrentLanguage: (language: string) => void;
 }
 
@@ -96,7 +100,3 @@ export const LanguageProvider = ({ children }: LanguageProviderinterface) => {
     </LanguageContext.Provider>
   );
 };
-
-interface KeyStringInterface {
-  [key: string]: LocalLanguageInterface;
-}
