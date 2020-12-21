@@ -58,13 +58,20 @@ export default function Note() {
     flex-col 
     items-center 
     justify-center 
-    text-4xl
+    text-2xl
     `;
   const styleBlock = `
     w-full 
     max-w-xs 
     text-left 
     mb-4 
+    `;
+  const styleTextBlock = `
+    ${styleBlock}
+    px-4 
+    py-4
+    break-word
+    shadow
     `;
   const styleButton = `
     w-full 
@@ -85,20 +92,30 @@ export default function Note() {
       <div
         className={
           note.text === null || note.text.length < 24
-            ? `${styleBlock} break-word`
+            ? styleTextBlock
             : note.text.length < 48
-            ? `${styleBlock} break-word sm:max-w-screen-sm`
+            ? `${styleTextBlock} sm:max-w-screen-sm`
             : note.text.length < 72
-            ? `${styleBlock} break-word sm:max-w-screen-sm md:max-w-screen-md`
+            ? `${styleTextBlock} sm:max-w-screen-sm md:max-w-screen-md`
             : note.text.length < 96
-            ? `${styleBlock} break-word sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg`
-            : `${styleBlock} break-word sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl`
+            ? `${styleTextBlock} sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg`
+            : `${styleTextBlock} sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl`
         }
       >
-        {note.text}
+        <p className="pb-6">{note.text}</p>
+        <p className="text-gray-500 text-sm">
+          {new Date(Number(note.dateTime)).toLocaleDateString()}
+        </p>
+        <p className="text-gray-500 text-sm">
+          {new Date(Number(note.dateTime)).toLocaleTimeString(undefined, {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </p>
       </div>
       {timeDifference !== null ? (
-        <div className={`${styleBlock} text-gray-500 text-2xl`}>
+        <div className={`${styleBlock} text-gray-500 text-xl`}>
+          <p>{timeDifference.explane}</p>
           {timeDifference.years !== "" ? <p>{timeDifference.years}</p> : null}
           {timeDifference.months !== "" ? <p>{timeDifference.months}</p> : null}
           {timeDifference.days !== "" ? <p>{timeDifference.days}</p> : null}
@@ -109,10 +126,6 @@ export default function Note() {
           {timeDifference.seconds !== "" ? (
             <p>{timeDifference.seconds}</p>
           ) : null}
-          <p>{timeDifference.explane}</p>
-          <p className="text-2xl">
-            {new Date(Number(note.dateTime)).toLocaleString()}
-          </p>
         </div>
       ) : null}
       <button

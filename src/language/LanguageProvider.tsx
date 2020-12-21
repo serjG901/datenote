@@ -16,8 +16,8 @@ export const languageText: KeyStringInterface = {
     copyCrash:
       "Вы не можаце скапіраваць спасылку. Праблема ў пратаколе падключэння або ў гэтым браўзеры.",
     now: "зараз",
-    passed: "прайшло з",
-    left: "засталося да",
+    passed: "прайшло",
+    left: "засталося",
   },
   en: {
     name: "en",
@@ -30,8 +30,8 @@ export const languageText: KeyStringInterface = {
     copyCrash:
       "You can not copy the link. This problem in connection protocol or current browser.",
     now: "now",
-    passed: "have passed from",
-    left: "left until",
+    passed: "have passed",
+    left: "left",
   },
   ru: {
     name: "ru",
@@ -44,8 +44,8 @@ export const languageText: KeyStringInterface = {
     copyCrash:
       "Вы не можете скопировать ссылку. Проблема в протоколе подключения или в текущем браузере.",
     now: "сейчас",
-    passed: "прошло с",
-    left: "осталось до",
+    passed: "прошло",
+    left: "осталось",
   },
 };
 
