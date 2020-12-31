@@ -1,5 +1,5 @@
 import React from "react";
-import { getTimeDifferenceInterface } from "../../pureFunctions/getTimeDifference";
+import { getTimeDifferenceInterface } from "../../lib/getTimeDifference";
 
 interface TimeDifferenceBlockProps {
   timeDifference: getTimeDifferenceInterface;

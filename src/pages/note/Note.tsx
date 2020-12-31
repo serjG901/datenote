@@ -2,7 +2,7 @@ import * as React from "react";
 import {
   getTimeDifference,
   getTimeDifferenceInterface,
-} from "../../pureFunctions/getTimeDifference";
+} from "../../lib/getTimeDifference";
 import { useLanguage } from "../../language/LanguageProvider";
 import TextWithDateTimeOnSheet from "../../common/TextWithDateTimeOnSheet";
 import TimeDifferenceBlock from "./TimeDifferenceBlock";
